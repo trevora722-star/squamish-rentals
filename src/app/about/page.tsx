@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
+import { PageBanner } from "@/components/site/PageBanner";
 
 export const metadata = {
   title: "About us",
@@ -41,76 +42,62 @@ export default function AboutPage() {
     <>
       <Header />
       <main className="flex-1">
-        {/* Hero — "Hey, I'm Adam" */}
-        <section className="relative overflow-hidden">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 opacity-50"
-            style={{
-              backgroundImage:
-                "radial-gradient(60% 60% at 80% 0%, rgba(13, 79, 74, 0.15) 0%, rgba(13, 79, 74, 0) 60%)",
-            }}
-          />
-          <div className="container-x mx-auto max-w-6xl pt-16 pb-20 grid gap-10 md:gap-14 md:grid-cols-12 items-center">
-            <div className="md:col-span-6">
-              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-[var(--shadow-pop)]">
-                <Image
-                  src="/images/adam-about.webp"
-                  alt="Adam, founder of Squamish Adventure Rentals, with a Kawasaki ATV in the BC backcountry"
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  priority
-                />
-              </div>
+        <PageBanner
+          imageSrc="/images/adam-about.webp"
+          eyebrow="Meet the guy behind the gears"
+          headline="Hey, I'm Adam"
+          subhead="I started Squamish Adventure Rentals because I wanted to share the part of BC that makes me feel alive."
+          height="xl"
+          position="top"
+          overlayOpacity={45}
+        />
+
+        {/* Story */}
+        <section className="container-x mx-auto max-w-5xl py-16 grid gap-10 md:gap-16 md:grid-cols-12 items-start">
+          <div className="md:col-span-5">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-[var(--shadow-pop)] bg-gradient-to-br from-primary to-secondary">
+              <Image
+                src="/images/adam-about.webp"
+                alt="Adam, founder of Squamish Adventure Rentals"
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 40vw, 100vw"
+              />
             </div>
+          </div>
 
-            <div className="md:col-span-6">
-              <p className="text-sm font-semibold italic text-muted-foreground">
-                Meet the guy behind the gears
-              </p>
-              <h1 className="mt-2">Hey, I&apos;m Adam</h1>
+          <div className="md:col-span-7 space-y-5 text-lg text-muted-foreground leading-relaxed">
+            <p>
+              There&apos;s something uniquely special about being in the
+              backcountry that&apos;s unlike any other feeling. This typically
+              has a high cost of entry in order to do safely and responsibly,
+              and Squamish Adventure Rentals is here to lower that barrier and
+              unlock some new terrain for adventurers of all walks of life.
+            </p>
+            <p>
+              Whether it&apos;s your first ride or you grew up on a farm riding
+              ATVs, I&apos;m here to make sure you&apos;re safe, stoked, and
+              have an unforgettable adventure in all the right ways.
+            </p>
 
-              <div className="mt-6 space-y-5 text-lg text-muted-foreground leading-relaxed">
-                <p>
-                  I started Squamish Adventure Rentals because I wanted to
-                  share the part of BC that makes me feel alive.
-                </p>
-                <p>
-                  There&apos;s something uniquely special about being in the
-                  backcountry that&apos;s unlike any other feeling. This
-                  typically has a high cost of entry in order to do safely and
-                  responsibly, and Squamish Adventure Rentals is here to lower
-                  that barrier and unlock some new terrain for adventurers of
-                  all walks of life.
-                </p>
-                <p>
-                  Whether it&apos;s your first ride or you grew up on a farm
-                  riding ATVs, I&apos;m here to make sure you&apos;re safe,
-                  stoked, and have an unforgettable adventure in all the right
-                  ways.
-                </p>
-              </div>
+            <ul className="pt-2 space-y-1.5 text-fg">
+              <li className="flex gap-2">
+                <span className="text-accent">→</span>
+                <span>Let&apos;s ride.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent">→</span>
+                <span>Let&apos;s explore.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent">→</span>
+                <span>Let&apos;s make some damn good memories.</span>
+              </li>
+            </ul>
 
-              <ul className="mt-8 space-y-1.5 text-fg">
-                <li className="flex gap-2">
-                  <span className="text-accent">→</span>
-                  <span>Let&apos;s ride.</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-accent">→</span>
-                  <span>Let&apos;s explore.</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-accent">→</span>
-                  <span>Let&apos;s make some damn good memories.</span>
-                </li>
-              </ul>
-
-              <Link href="/book" className="btn-accent mt-8 inline-block">
-                Book Your Ride
-              </Link>
-            </div>
+            <Link href="/book" className="btn-accent mt-4 inline-block">
+              Book Your Ride
+            </Link>
           </div>
         </section>
 

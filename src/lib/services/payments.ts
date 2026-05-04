@@ -51,16 +51,20 @@ export async function createCheckoutSession(bookingNumber: string) {
   const stripe = getStripe();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map(
-    (it) => ({
-      quantity: it.qty,
-      price_data: {
-        currency: "cad",
-        unit_amount: Math.round((parseFloat(it.subtotal) / it.qty) * 100),
-        product_data: { name: it.atvName },
-      },
-    }),
-  );
+  // Derive the line-item type from the Stripe create() signature so we're not
+  // reliant on a specific namespace path (which has shifted between Stripe SDK
+  // versions and breaks Netlify's stricter type resolution).
+  type CreateParams = Parameters<typeof stripe.checkout.sessions.create>[0];
+  type LineItem = NonNullable<CreateParams["line_items"]>[number];
+
+  const lineItems: LineItem[] = items.map((it) => ({
+    quantity: it.qty,
+    price_data: {
+      currency: "cad",
+      unit_amount: Math.round((parseFloat(it.subtotal) / it.qty) * 100),
+      product_data: { name: it.atvName },
+    },
+  }));
   for (const ad of addonRows) {
     lineItems.push({
       quantity: ad.qty,

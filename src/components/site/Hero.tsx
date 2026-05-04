@@ -12,7 +12,7 @@ export function Hero() {
         height="xl"
       />
 
-      {/* CTAs + stats below the banner */}
+      {/* CTAs below the banner */}
       <section className="container-x mx-auto max-w-5xl py-14">
         <div className="flex flex-wrap gap-3">
           <Link href="/book" className="btn-accent inline-flex items-center gap-2">
@@ -24,19 +24,6 @@ export function Hero() {
           </Link>
           <Link href="/fleet" className="btn-ghost">Browse the fleet</Link>
         </div>
-
-        <dl className="mt-12 grid grid-cols-3 gap-6 max-w-md">
-          {[
-            { k: "150+", v: "Riders served / year" },
-            { k: "4.9★", v: "Average review" },
-            { k: "0", v: "Pickup detours" },
-          ].map((s) => (
-            <div key={s.v}>
-              <dt className="font-display text-3xl text-primary">{s.k}</dt>
-              <dd className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.v}</dd>
-            </div>
-          ))}
-        </dl>
       </section>
     </>
   );

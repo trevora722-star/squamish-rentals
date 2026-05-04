@@ -13,19 +13,19 @@ const NAV = [
 export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/75">
-      <div className="container-x mx-auto flex h-20 md:h-28 max-w-7xl items-center justify-between gap-6">
+      <div className="container-x mx-auto flex h-24 md:h-32 max-w-7xl items-center justify-between gap-6">
         <Link
           href="/"
           aria-label="Squamish Adventure Rentals — Home"
           className="flex items-center"
         >
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="Squamish Adventure Rentals"
-            width={220}
-            height={220}
+            width={300}
+            height={300}
             priority
-            className="h-14 md:h-24 w-auto"
+            className="h-16 md:h-28 w-auto"
           />
         </Link>
 

@@ -31,8 +31,7 @@ export function Testimonials() {
         </p>
         <h2 className="mt-3">Real trips, real reviews.</h2>
         <p className="mt-4 text-lg text-muted-foreground">
-          These are placeholders for now — we'll swap in real reviews once your
-          first season's customers come back glowing.
+          From riders who&apos;ve spent a day on the trails with us.
         </p>
       </div>
 
@@ -48,14 +47,7 @@ export function Testimonials() {
             </blockquote>
             <figcaption className="mt-5 pt-5 border-t border-border">
               <div className="font-semibold">{t.author}</div>
-              <div className="text-xs text-muted-foreground mt-0.5">
-                {t.location}
-                {t.placeholder && (
-                  <span className="ml-2 inline-block rounded-full bg-muted px-2 py-0.5 text-[10px] uppercase tracking-wider">
-                    placeholder
-                  </span>
-                )}
-              </div>
+              <div className="text-xs text-muted-foreground mt-0.5">{t.location}</div>
             </figcaption>
           </figure>
         ))}

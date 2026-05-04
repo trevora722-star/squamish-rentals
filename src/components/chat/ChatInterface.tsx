@@ -370,39 +370,13 @@ function MessageBubble({ message }: { message: ChatMessage }) {
           <p className="whitespace-pre-wrap text-sm leading-relaxed">
             {message.text}
             {message.pending && !message.text && (
-              <span className="inline-block animate-pulse">●</span>
+              <span className="inline-flex gap-1 items-center">
+                <span className="h-1.5 w-1.5 rounded-full bg-current opacity-40 animate-pulse" />
+                <span className="h-1.5 w-1.5 rounded-full bg-current opacity-60 animate-pulse [animation-delay:150ms]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80 animate-pulse [animation-delay:300ms]" />
+              </span>
             )}
           </p>
-        )}
-        {message.toolEvents && message.toolEvents.length > 0 && (
-          <ul className="mt-3 space-y-1.5 text-xs">
-            {message.toolEvents.map((t) => (
-              <li
-                key={t.id}
-                className={`flex items-center gap-2 rounded-md px-2.5 py-1.5 ${
-                  isUser ? "bg-primary-foreground/10" : "bg-muted"
-                }`}
-              >
-                <span
-                  className={`inline-block h-1.5 w-1.5 rounded-full ${
-                    t.status === "ok"
-                      ? "bg-success"
-                      : t.status === "error"
-                        ? "bg-danger"
-                        : "bg-accent animate-pulse"
-                  }`}
-                />
-                <code className="font-mono">{t.name}</code>
-                <span className="text-muted-foreground">
-                  {t.status === "running"
-                    ? "running…"
-                    : t.status === "ok"
-                      ? "✓"
-                      : `failed: ${t.error ?? "error"}`}
-                </span>
-              </li>
-            ))}
-          </ul>
         )}
       </div>
     </div>

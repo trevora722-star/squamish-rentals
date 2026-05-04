@@ -1,12 +1,13 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
+import { PageBanner } from "@/components/site/PageBanner";
 import Link from "next/link";
 
 export const metadata = {
   title: "Contact",
   description:
-    "Reach the Squamish Adventure Rentals team — chat, email, or phone.",
+    "Reach Squamish Adventure Rentals — chat, email, or phone.",
 };
 
 export default function ContactPage() {
@@ -14,18 +15,15 @@ export default function ContactPage() {
     <>
       <Header />
       <main className="flex-1">
-        <section className="container-x mx-auto max-w-3xl py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Contact
-          </p>
-          <h1 className="mt-3">Three ways to reach us.</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Chat is fastest — our assistant handles quotes and bookings around
-            the clock. Email and phone go to a human (response within one
-            business day).
-          </p>
+        <PageBanner
+          imageSrc="/images/kawasaki-atv.webp"
+          eyebrow="Contact"
+          headline="Three ways to reach me."
+          subhead="Chat is fastest — the booking assistant handles quotes and bookings around the clock. Email and phone go to a human (response within one business day)."
+        />
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-3">
+        <section className="container-x mx-auto max-w-4xl py-16">
+          <div className="grid gap-5 sm:grid-cols-3">
             <Link
               href="/chat"
               className="rounded-xl border border-border bg-card p-7 hover:border-primary hover:bg-primary-soft transition-colors"

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
+import { PageBanner } from "@/components/site/PageBanner";
 
 export const metadata = {
   title: "Trails",
@@ -49,7 +50,7 @@ const TRAILS = [
     tips: [
       "Ride with at least one other person — patches have no cell service.",
       "Tell us your route at delivery so we know roughly where to look.",
-      "Big-bore machines (Alpine Pro 1000) handle this best.",
+      "Big-bore machines handle this best.",
     ],
   },
   {
@@ -59,7 +60,7 @@ const TRAILS = [
     elevation: "Moderate — high-elevation glacial views",
     level: "Intermediate",
     season: "July to mid-September",
-    body: "Shorter than the others but the payoff is dramatic glacier viewpoints. The road has been improved in recent years and is now manageable on the Backcountry 700. Best on a clear day.",
+    body: "Shorter than the others but the payoff is dramatic glacier viewpoints. The road has been improved in recent years and is now manageable on a stock ATV. Best on a clear day.",
     tips: [
       "Earlier is better — afternoon clouds roll in fast.",
       "No water sources up high; bring 3L per person minimum.",
@@ -73,20 +74,14 @@ export default function TrailsPage() {
     <>
       <Header />
       <main className="flex-1">
-        <section className="container-x mx-auto max-w-4xl pt-16 pb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Trails
-          </p>
-          <h1 className="mt-3">Where to ride in the Sea-to-Sky.</h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            A short list of the routes we recommend most. Tell our chat
-            assistant where you're staying and what kind of ride you want — it
-            can match the right route to your group, your machine, and current
-            conditions.
-          </p>
-        </section>
+        <PageBanner
+          imageSrc="/images/kawasaki-atv.webp"
+          eyebrow="Trails"
+          headline="Where to ride in the Sea-to-Sky."
+          subhead="A short list of the routes I recommend most. Tell our chat assistant where you're staying and what kind of ride you want — it'll match the right route to your group, your machine, and current conditions."
+        />
 
-        <section className="container-x mx-auto max-w-4xl pb-20 grid gap-6">
+        <section className="container-x mx-auto max-w-4xl py-20 grid gap-6">
           {TRAILS.map((t) => (
             <article
               key={t.slug}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
+import { PageBanner } from "@/components/site/PageBanner";
 
 export const metadata = {
   title: "The Fleet",
@@ -15,20 +16,14 @@ export default function FleetPage() {
     <>
       <Header />
       <main className="flex-1">
-        <section className="container-x mx-auto max-w-3xl pt-16 pb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            The fleet
-          </p>
-          <h1 className="mt-3">Four brand-new Kawasaki ATVs.</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            We have four brand-new Kawasaki ATVs that are reliable, easy to
-            ride, and well suited to local terrain. Each one is serviced and
-            fuelled before every rental, then delivered straight to your address
-            or trailhead.
-          </p>
-        </section>
+        <PageBanner
+          imageSrc="/images/kawasaki-atv.webp"
+          eyebrow="The fleet"
+          headline="Four brand-new Kawasaki ATVs."
+          subhead="Reliable, easy to ride, and well suited to local terrain. Serviced and fuelled before every rental, then delivered straight to your address or trailhead."
+        />
 
-        <section className="container-x mx-auto max-w-4xl pb-24">
+        <section className="container-x mx-auto max-w-4xl py-16">
           <article className="overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)]">
             <div className="relative aspect-[16/9] w-full bg-gradient-to-br from-primary to-secondary">
               <Image
@@ -37,7 +32,6 @@ export default function FleetPage() {
                 fill
                 className="object-cover"
                 sizes="(min-width: 768px) 800px, 100vw"
-                priority
               />
             </div>
             <div className="p-7 md:p-10">
@@ -76,11 +70,11 @@ export default function FleetPage() {
               </dl>
 
               <div className="mt-7 flex flex-wrap gap-2">
-                <Link href="/chat" className="btn-primary text-sm">
-                  Check availability
+                <Link href="/book" className="btn-primary text-sm">
+                  Book online
                 </Link>
-                <Link href="/chat?action=quote" className="btn-ghost text-sm">
-                  Get a quote
+                <Link href="/chat" className="btn-ghost text-sm">
+                  Ask in chat
                 </Link>
                 <Link href="/fleet/kawasaki-atv" className="btn-ghost text-sm">
                   More details

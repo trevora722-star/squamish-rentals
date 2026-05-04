@@ -1,6 +1,7 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
+import { PageBanner } from "@/components/site/PageBanner";
 import Link from "next/link";
 
 export const metadata = {
@@ -24,11 +25,11 @@ const FAQ = [
   },
   {
     q: "I've never ridden before. Is that okay?",
-    a: "Absolutely. We rent to first-timers all the time. Our beginner machines (Trailblazer 500) are forgiving, and the safety briefing covers everything you need. We can also add a 60-minute guided intro ride for $120.",
+    a: "Absolutely. We rent to first-timers all the time. Our Kawasaki ATVs are forgiving and easy to ride, and the safety briefing covers everything you need. We can also add a 60-minute guided intro ride for $120.",
   },
   {
     q: "What does it cost?",
-    a: "Daily rates start at $199. Multi-day discounts kick in at 3 days (8% off) and 7+ days (15% off). Delivery is free in Squamish, $60–80 in the Sea-to-Sky corridor, and $150 for Greater Vancouver. A refundable damage deposit is pre-authorized on your card.",
+    a: "Daily rates start at $249. Multi-day discounts kick in at 3 days (8% off) and 7+ days (15% off). Delivery is free in Squamish, $60–80 in the Sea-to-Sky corridor, and $150 for Greater Vancouver. A refundable damage deposit is pre-authorized on your card.",
   },
   {
     q: "What if it rains?",
@@ -40,7 +41,7 @@ const FAQ = [
   },
   {
     q: "Can I modify or cancel a booking?",
-    a: "Yes. Free changes up to 48 hours before your trip. Inside 48 hours, modifications are subject to availability and a $50 change fee. Cancellations within 48 hours are 50% refundable; within 24 hours, non-refundable. Reach out via chat or email and a team member will handle it.",
+    a: "Yes. Free changes up to 48 hours before your trip. Inside 48 hours, modifications are subject to availability and a $50 change fee. Cancellations within 48 hours are 50% refundable; within 24 hours, non-refundable. Reach out via chat or email and we'll handle it.",
   },
   {
     q: "Where can I actually ride?",
@@ -53,17 +54,15 @@ export default function FaqPage() {
     <>
       <Header />
       <main className="flex-1">
-        <section className="container-x mx-auto max-w-3xl py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Questions
-          </p>
-          <h1 className="mt-3">The things people ask us most.</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            If your question isn't here, open the chat — our assistant probably
-            has the answer, and if it doesn't, it'll loop in a human.
-          </p>
+        <PageBanner
+          imageSrc="/images/kawasaki-atv.webp"
+          eyebrow="Questions"
+          headline="The things people ask us most."
+          subhead="If your question isn't here, open the chat — our assistant probably has the answer, and if it doesn't, it'll loop me in."
+        />
 
-          <div className="mt-12 divide-y divide-border border-y border-border">
+        <section className="container-x mx-auto max-w-3xl py-16">
+          <div className="divide-y divide-border border-y border-border">
             {FAQ.map((item) => (
               <details key={item.q} className="group py-5">
                 <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
@@ -82,7 +81,7 @@ export default function FaqPage() {
           <div className="mt-14 rounded-xl bg-primary-soft px-6 py-7">
             <p className="font-display text-xl font-semibold text-primary">Still wondering?</p>
             <p className="mt-2 text-fg/80">
-              Drop your question in the chat. If our assistant can't answer, it'll forward to the team.
+              Drop your question in the chat. If our assistant can't answer, it'll forward it to me.
             </p>
             <Link href="/chat" className="btn-primary mt-5 inline-block">Open chat</Link>
           </div>

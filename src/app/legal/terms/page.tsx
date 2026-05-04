@@ -104,8 +104,8 @@ export default function TermsPage() {
         <h2>9. Contact</h2>
         <p>
           Questions about these terms? Email{" "}
-          <a href="mailto:hello@squamishadventurerentals.com" className="text-primary underline">
-            hello@squamishadventurerentals.com
+          <a href="mailto:info@squamishadventurerentals.com" className="text-primary underline">
+            info@squamishadventurerentals.com
           </a>.
         </p>
       </section>

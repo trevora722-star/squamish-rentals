@@ -33,12 +33,12 @@ export default function ContactPage() {
               <p className="mt-4 text-sm font-medium text-primary">Open chat →</p>
             </Link>
             <a
-              href="mailto:hello@squamishadventurerentals.com"
+              href="mailto:info@squamishadventurerentals.com"
               className="rounded-xl border border-border bg-card p-7 hover:border-primary hover:bg-primary-soft transition-colors"
             >
               <p className="font-display text-xl font-semibold">Email</p>
               <p className="mt-2 text-sm text-muted-foreground">For longer questions or attachments.</p>
-              <p className="mt-4 text-sm font-medium text-primary break-all">hello@squamishadventurerentals.com</p>
+              <p className="mt-4 text-sm font-medium text-primary break-all">info@squamishadventurerentals.com</p>
             </a>
             <a
               href="tel:+16040000000"

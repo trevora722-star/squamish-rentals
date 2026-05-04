@@ -37,8 +37,8 @@ export function Footer() {
           </h4>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
-              <a href="mailto:hello@squamishadventurerentals.com" className="hover:text-accent">
-                hello@squamishadventurerentals.com
+              <a href="mailto:info@squamishadventurerentals.com" className="hover:text-accent">
+                info@squamishadventurerentals.com
               </a>
             </li>
             <li>

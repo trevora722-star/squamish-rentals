@@ -54,7 +54,10 @@ export async function createCheckoutSession(bookingNumber: string) {
   // Derive the line-item type from the Stripe create() signature so we're not
   // reliant on a specific namespace path (which has shifted between Stripe SDK
   // versions and breaks Netlify's stricter type resolution).
-  type CreateParams = Parameters<typeof stripe.checkout.sessions.create>[0];
+  // create()'s first param is overloaded as optional → strip undefined first.
+  type CreateParams = NonNullable<
+    Parameters<typeof stripe.checkout.sessions.create>[0]
+  >;
   type LineItem = NonNullable<CreateParams["line_items"]>[number];
 
   const lineItems: LineItem[] = items.map((it) => ({

@@ -1,9 +1,9 @@
 import { config } from "dotenv";
+
+// Load env vars BEFORE importing anything that reads process.env at module load.
+// Static imports are hoisted, so we use dynamic imports inside main() instead.
 config({ path: ".env.local" });
 config({ path: ".env" });
-
-import { db } from "./index";
-import { atvs, addons, deliveryZones, kbArticles } from "./schema";
 
 const FLEET = [
   {
@@ -205,6 +205,10 @@ const KB = [
 ];
 
 async function main() {
+  // Dynamic imports — these run AFTER config() above has populated process.env
+  const { db } = await import("./index");
+  const { atvs, addons, deliveryZones, kbArticles } = await import("./schema");
+
   console.log("Seeding ATVs…");
   for (const a of FLEET) {
     await db.insert(atvs).values(a).onConflictDoNothing({ target: atvs.slug });

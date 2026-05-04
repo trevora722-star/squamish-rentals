@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function FleetPreview() {
   return (
@@ -60,13 +61,13 @@ export function FleetPreview() {
 function FleetCardImage({ label }: { label: string }) {
   return (
     <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-primary to-secondary">
-      <svg viewBox="0 0 400 250" className="absolute inset-0 h-full w-full" aria-hidden="true">
-        <path d="M0 180 L80 140 L160 170 L240 130 L320 160 L400 140 L400 250 L0 250 Z" fill="#0a3a37" opacity="0.7" />
-        <path d="M0 215 L100 195 L200 215 L300 185 L400 210 L400 250 L0 250 Z" fill="#072421" />
-      </svg>
-      <span className="absolute bottom-3 left-4 text-[11px] uppercase tracking-[0.18em] text-primary-foreground/65">
-        Photo placeholder · {label}
-      </span>
+      <Image
+        src="/images/kawasaki-atv.webp"
+        alt={label}
+        fill
+        className="object-cover"
+        sizes="(min-width: 1024px) 600px, 100vw"
+      />
     </div>
   );
 }

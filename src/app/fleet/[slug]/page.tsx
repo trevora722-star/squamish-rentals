@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -96,13 +97,14 @@ export default async function FleetDetailPage({
         <section className="container-x mx-auto max-w-5xl pb-12 grid gap-10 md:grid-cols-12 items-start">
           <div className="md:col-span-7">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-secondary">
-              <svg viewBox="0 0 400 300" className="absolute inset-0 h-full w-full" aria-hidden="true">
-                <path d="M0 220 L80 180 L160 210 L240 170 L320 200 L400 180 L400 300 L0 300 Z" fill="#0a3a37" opacity="0.7" />
-                <path d="M0 250 L100 230 L200 250 L300 220 L400 245 L400 300 L0 300 Z" fill="#072421" />
-              </svg>
-              <span className="absolute bottom-4 left-5 text-xs uppercase tracking-[0.18em] text-primary-foreground/70">
-                Photo placeholder · {atv.name}
-              </span>
+              <Image
+                src="/images/kawasaki-atv.webp"
+                alt={`${atv.name} in the Sea-to-Sky backcountry`}
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 700px, 100vw"
+                priority
+              />
             </div>
           </div>
 

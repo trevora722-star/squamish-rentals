@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
@@ -30,13 +31,14 @@ export default function FleetPage() {
         <section className="container-x mx-auto max-w-4xl pb-24">
           <article className="overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)]">
             <div className="relative aspect-[16/9] w-full bg-gradient-to-br from-primary to-secondary">
-              <svg viewBox="0 0 400 220" className="absolute inset-0 h-full w-full" aria-hidden="true">
-                <path d="M0 160 L80 120 L160 150 L240 110 L320 140 L400 120 L400 220 L0 220 Z" fill="#0a3a37" opacity="0.7" />
-                <path d="M0 195 L100 175 L200 195 L300 165 L400 190 L400 220 L0 220 Z" fill="#072421" />
-              </svg>
-              <span className="absolute bottom-3 left-4 text-[11px] uppercase tracking-[0.18em] text-primary-foreground/65">
-                Photo placeholder · Kawasaki ATV
-              </span>
+              <Image
+                src="/images/kawasaki-atv.webp"
+                alt="Kawasaki ATV in the Sea-to-Sky backcountry"
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 800px, 100vw"
+                priority
+              />
             </div>
             <div className="p-7 md:p-10">
               <p className="text-xs font-semibold uppercase tracking-wider text-accent">

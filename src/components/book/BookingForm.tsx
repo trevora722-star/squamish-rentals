@@ -331,7 +331,7 @@ export function BookingForm() {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="+1 (604) 000-0000"
+            placeholder="e.g. 604-555-0123"
             className="form-input"
             autoComplete="tel"
           />

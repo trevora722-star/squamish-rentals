@@ -41,12 +41,12 @@ export default function ContactPage() {
               <p className="mt-4 text-sm font-medium text-primary break-all">info@squamishadventurerentals.com</p>
             </a>
             <a
-              href="tel:+16040000000"
+              href="tel:+18886827545"
               className="rounded-xl border border-border bg-card p-7 hover:border-primary hover:bg-primary-soft transition-colors"
             >
               <p className="font-display text-xl font-semibold">Phone</p>
               <p className="mt-2 text-sm text-muted-foreground">For day-of-trip support.</p>
-              <p className="mt-4 text-sm font-medium text-primary">+1 (604) 000-0000</p>
+              <p className="mt-4 text-sm font-medium text-primary">1-888-682-7545</p>
             </a>
           </div>
 

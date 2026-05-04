@@ -18,10 +18,7 @@ interface ToolEvent {
 }
 
 const ATV_LABELS: Record<string, string> = {
-  "trailblazer-500": "Trailblazer 500",
-  "backcountry-700": "Backcountry 700 4x4",
-  "tandem-tourer": "Tandem Tourer",
-  "alpine-pro-1000": "Alpine Pro 1000",
+  "kawasaki-atv": "Kawasaki ATV",
 };
 
 const ROUTE_LABELS: Record<string, string> = {

@@ -7,92 +7,27 @@ config({ path: ".env" });
 
 const FLEET = [
   {
-    slug: "trailblazer-500",
-    name: "Trailblazer 500",
-    make: "Polaris",
-    model: "Sportsman 570",
-    year: 2024,
-    engineCc: 567,
+    slug: "kawasaki-atv",
+    name: "Kawasaki ATV",
+    make: "Kawasaki",
+    model: "(model — friends to confirm)",
+    year: 2026,
+    engineCc: null,
     seats: 1,
     skillLevel: "beginner" as const,
     description:
-      "Forgiving throttle, low seat height, and confidence-inspiring stability. The ride we hand to first-timers and family groups.",
+      "We have four brand-new Kawasaki ATVs that are reliable, easy to ride, and well suited to local terrain.",
     highlights: [
-      "Automatic transmission",
-      "Selectable 2WD/4WD",
-      "Friendly for new riders",
+      "Brand-new for the 2026 season",
+      "Easy and confidence-inspiring to ride",
+      "Helmets, goggles, gloves, and a safety briefing included",
+      "Fuelled and ready for the day",
     ],
-    dailyRate: "199.00",
-    weeklyRate: "1099.00",
+    dailyRate: "249.00",
+    weeklyRate: "1399.00",
     depositAmount: "1000.00",
     minAge: 19,
     quantityOwned: 4,
-  },
-  {
-    slug: "backcountry-700",
-    name: "Backcountry 700 4x4",
-    make: "Can-Am",
-    model: "Outlander 700",
-    year: 2024,
-    engineCc: 700,
-    seats: 1,
-    skillLevel: "intermediate" as const,
-    description:
-      "Selectable 4WD, deep low-end torque, and a proper rack for coolers, fuel, and camp gear. Eats logging roads for breakfast.",
-    highlights: [
-      "Front + rear cargo racks",
-      "Tow rating 1300 lb",
-      "Long-range fuel tank",
-    ],
-    dailyRate: "269.00",
-    weeklyRate: "1499.00",
-    depositAmount: "1500.00",
-    minAge: 19,
-    quantityOwned: 3,
-  },
-  {
-    slug: "tandem-tourer",
-    name: "Tandem Tourer",
-    make: "Yamaha",
-    model: "Grizzly 700 EPS 2-up",
-    year: 2024,
-    engineCc: 686,
-    seats: 2,
-    skillLevel: "intermediate" as const,
-    description:
-      "Designed for couples or a parent and teen — long-travel suspension, a comfortable rear seat, and grab handles that actually feel secure.",
-    highlights: [
-      "Two-up rear seat",
-      "Power steering",
-      "Heated grips",
-    ],
-    dailyRate: "299.00",
-    weeklyRate: "1699.00",
-    depositAmount: "1500.00",
-    minAge: 19,
-    quantityOwned: 2,
-  },
-  {
-    slug: "alpine-pro-1000",
-    name: "Alpine Pro 1000",
-    make: "Polaris",
-    model: "Sportsman XP 1000",
-    year: 2024,
-    engineCc: 952,
-    seats: 1,
-    skillLevel: "advanced" as const,
-    description:
-      "Big-bore power for experienced riders pushing into Indian Arm or the Brandywine alpine. Tuneable ride modes and serious clearance.",
-    highlights: [
-      "High-clearance suspension",
-      "Selectable ride modes",
-      "Heavy-duty winch",
-    ],
-    dailyRate: "349.00",
-    weeklyRate: "1999.00",
-    depositAmount: "2000.00",
-    minAge: 19,
-    quantityOwned: 2,
   },
 ];
 
@@ -207,15 +142,34 @@ const KB = [
 async function main() {
   // Dynamic imports — these run AFTER config() above has populated process.env
   const { db } = await import("./index");
-  const { atvs, addons, deliveryZones, kbArticles } = await import("./schema");
+  const {
+    atvs,
+    addons,
+    deliveryZones,
+    kbArticles,
+    bookingHolds,
+    bookingItems,
+    bookingAddons,
+    bookings,
+  } = await import("./schema");
+
+  // Reset (dev only). This wipes test bookings so we can change inventory cleanly.
+  console.log("Resetting tables (dev-only)…");
+  await db.delete(bookingHolds);
+  await db.delete(bookingItems);
+  await db.delete(bookingAddons);
+  await db.delete(bookings);
+  await db.delete(atvs);
+  await db.delete(addons);
+  await db.delete(deliveryZones);
 
   console.log("Seeding ATVs…");
   for (const a of FLEET) {
-    await db.insert(atvs).values(a).onConflictDoNothing({ target: atvs.slug });
+    await db.insert(atvs).values(a);
   }
   console.log("Seeding add-ons…");
   for (const ad of ADDONS) {
-    await db.insert(addons).values(ad).onConflictDoNothing({ target: addons.slug });
+    await db.insert(addons).values(ad);
   }
   console.log("Seeding delivery zones…");
   for (const z of ZONES) {

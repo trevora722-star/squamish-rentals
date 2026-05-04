@@ -3,12 +3,7 @@ import type { MetadataRoute } from "next";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://squamishadventurerentals.com";
 
-const FLEET_SLUGS = [
-  "trailblazer-500",
-  "backcountry-700",
-  "tandem-tourer",
-  "alpine-pro-1000",
-];
+const FLEET_SLUGS = ["kawasaki-atv"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

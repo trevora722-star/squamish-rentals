@@ -1,92 +1,56 @@
 import Link from "next/link";
 
-const PLACEHOLDER_FLEET = [
-  {
-    slug: "trailblazer-500",
-    name: "Trailblazer 500",
-    tagline: "Beginner-friendly automatic",
-    description:
-      "Forgiving throttle, low seat height, and confidence-inspiring stability. The ride we hand to first-timers and family groups.",
-    seats: 1,
-    skill: "Beginner",
-    dailyRate: 199,
-  },
-  {
-    slug: "backcountry-700",
-    name: "Backcountry 700 4x4",
-    tagline: "All-day forest service road weapon",
-    description:
-      "Selectable 4WD, deep low-end torque, and a proper rack for coolers, fuel, and camp gear. Eats logging roads for breakfast.",
-    seats: 1,
-    skill: "Intermediate",
-    dailyRate: 269,
-  },
-  {
-    slug: "tandem-tourer",
-    name: "Tandem Tourer",
-    tagline: "Two-up sport-touring",
-    description:
-      "Designed for couples or a parent and teen — long-travel suspension, a comfortable rear seat, and grab handles that actually feel secure.",
-    seats: 2,
-    skill: "Intermediate",
-    dailyRate: 299,
-  },
-];
-
 export function FleetPreview() {
   return (
     <section className="bg-muted">
-      <div className="container-x mx-auto max-w-7xl py-24">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div className="max-w-xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">The fleet</p>
-            <h2 className="mt-3">Machines tuned for Sea-to-Sky terrain.</h2>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Every quad in the lineup is serviced before each rental, fuelled
-              up, and matched to your skill level by our chat assistant.
-            </p>
+      <div className="container-x mx-auto max-w-7xl py-24 grid gap-12 md:grid-cols-12 items-center">
+        <div className="md:col-span-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">The fleet</p>
+          <h2 className="mt-3">Four brand-new Kawasaki ATVs.</h2>
+          <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+            We have four brand-new Kawasaki ATVs that are reliable, easy to
+            ride, and well suited to local terrain. Each one is serviced and
+            fuelled before every rental.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/chat" className="btn-primary text-sm">
+              Check availability
+            </Link>
+            <Link href="/fleet" className="btn-ghost text-sm">
+              More on the fleet
+            </Link>
           </div>
-          <Link href="/fleet" className="btn-ghost">See the full lineup →</Link>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {PLACEHOLDER_FLEET.map((atv) => (
-            <article
-              key={atv.slug}
-              className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-pop)]"
-            >
-              <FleetCardImage label={atv.name} />
-              <div className="flex flex-col flex-1 p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-accent">{atv.tagline}</p>
-                <p className="mt-2 font-display text-2xl font-semibold">{atv.name}</p>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed flex-1">{atv.description}</p>
+        <div className="md:col-span-7">
+          <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-pop)]">
+            <FleetCardImage label="Kawasaki ATV" />
+            <div className="flex flex-col flex-1 p-7">
+              <p className="text-xs font-semibold uppercase tracking-wider text-accent">
+                Brand-new for 2026
+              </p>
+              <p className="mt-2 font-display text-2xl font-semibold">Kawasaki ATV</p>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                Reliable, easy to ride, and well suited to local terrain. Four
+                of them, ready when you are.
+              </p>
 
-                <dl className="mt-5 grid grid-cols-3 gap-3 text-xs">
-                  <div>
-                    <dt className="text-muted-foreground">Seats</dt>
-                    <dd className="font-semibold mt-0.5">{atv.seats}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-muted-foreground">Skill</dt>
-                    <dd className="font-semibold mt-0.5">{atv.skill}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-muted-foreground">From</dt>
-                    <dd className="font-semibold mt-0.5">${atv.dailyRate}/day</dd>
-                  </div>
-                </dl>
-
-                <div className="mt-6 flex gap-2">
-                  <Link href={`/fleet/${atv.slug}`} className="btn-ghost text-sm flex-1 text-center">
-                    Details
-                  </Link>
-                  <Link href={`/chat?atv=${atv.slug}`} className="btn-primary text-sm flex-1 text-center">
-                    Check availability
-                  </Link>
+              <dl className="mt-5 grid grid-cols-3 gap-3 text-xs">
+                <div>
+                  <dt className="text-muted-foreground">Available</dt>
+                  <dd className="font-semibold mt-0.5">4 riders</dd>
                 </div>
-              </div>
-            </article>
-          ))}
+                <div>
+                  <dt className="text-muted-foreground">Skill</dt>
+                  <dd className="font-semibold mt-0.5">Beginner</dd>
+                </div>
+                <div>
+                  <dt className="text-muted-foreground">From</dt>
+                  <dd className="font-semibold mt-0.5">$249/day</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
         </div>
       </div>
     </section>

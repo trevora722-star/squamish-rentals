@@ -20,7 +20,7 @@ export function Header() {
           className="flex items-center"
         >
           <Image
-            src="/images/logo.webp"
+            src="/images/logo.jpg"
             alt="Squamish Adventure Rentals"
             width={220}
             height={220}

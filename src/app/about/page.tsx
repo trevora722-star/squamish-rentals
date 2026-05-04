@@ -54,19 +54,14 @@ export default function AboutPage() {
           <div className="container-x mx-auto max-w-6xl pt-16 pb-20 grid gap-10 md:gap-14 md:grid-cols-12 items-center">
             <div className="md:col-span-6">
               <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-[var(--shadow-pop)]">
-                {/* Drop the photo at /public/images/adam-about.jpg and it
-                    appears here. Until then, we render a placeholder. */}
                 <Image
-                  src="/images/adam-about.jpg"
+                  src="/images/adam-about.webp"
                   alt="Adam, founder of Squamish Adventure Rentals, with a Kawasaki ATV in the BC backcountry"
                   fill
                   className="object-cover"
                   sizes="(min-width: 768px) 50vw, 100vw"
                   priority
                 />
-                <div className="absolute bottom-3 left-4 text-[11px] uppercase tracking-[0.18em] text-primary-foreground/65 pointer-events-none mix-blend-difference">
-                  Photo: replace at /public/images/adam-about.jpg
-                </div>
               </div>
             </div>
 

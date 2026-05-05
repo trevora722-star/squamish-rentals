@@ -1,12 +1,38 @@
-import { and, eq, gt, gte, inArray, lt, lte, or, sql } from "drizzle-orm";
+import { and, eq, gt, gte, inArray, isNull, lt, lte, or, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
   atvs,
+  blackoutDates,
   bookingHolds,
   bookingItems,
   bookings,
 } from "@/db/schema";
 import { addDays } from "date-fns";
+
+/**
+ * Returns true if the given range overlaps any blackout dates either for the
+ * specific ATV or for the whole fleet (atvId is null).
+ */
+export async function isBlackedOut(
+  atvId: string,
+  startDate: string,
+  endDate: string,
+): Promise<{ blocked: boolean; reason?: string }> {
+  const rows = await db
+    .select({ reason: blackoutDates.reason })
+    .from(blackoutDates)
+    .where(
+      and(
+        or(eq(blackoutDates.atvId, atvId), isNull(blackoutDates.atvId)),
+        lte(blackoutDates.startDate, endDate),
+        gte(blackoutDates.endDate, startDate),
+      ),
+    )
+    .limit(1);
+
+  if (rows.length === 0) return { blocked: false };
+  return { blocked: true, reason: rows[0].reason ?? undefined };
+}
 
 export interface AvailabilityResult {
   available: boolean;
@@ -15,6 +41,7 @@ export interface AvailabilityResult {
   unitsRequested: number;
   unitsOwned: number;
   alternativeDates?: { startDate: string; endDate: string }[];
+  blackoutReason?: string;
 }
 
 const ACTIVE_BOOKING_STATUSES = [
@@ -98,6 +125,19 @@ export async function checkAvailability({
 
   const results: AvailabilityResult[] = [];
   for (const t of targets) {
+    const blackout = await isBlackedOut(t.id, startDate, endDate);
+    if (blackout.blocked) {
+      results.push({
+        atvSlug: t.slug,
+        available: false,
+        unitsAvailable: 0,
+        unitsRequested: quantity,
+        unitsOwned: t.owned,
+        blackoutReason:
+          blackout.reason ?? "These dates are blocked off and not available for booking.",
+      });
+      continue;
+    }
     const available = await getUnitsAvailable(t.id, startDate, endDate);
     results.push({
       atvSlug: t.slug,

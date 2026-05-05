@@ -6,8 +6,11 @@ const NAV = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/calendar", label: "Calendar" },
   { href: "/admin/bookings", label: "Bookings" },
+  { href: "/admin/customers", label: "Customers" },
+  { href: "/admin/payments", label: "Payments" },
+  { href: "/admin/blackouts", label: "Blackouts" },
   { href: "/admin/fleet", label: "Fleet" },
-  { href: "/admin/chats", label: "Chat transcripts" },
+  { href: "/admin/chats", label: "Chats" },
 ];
 
 export default function AdminLayout({

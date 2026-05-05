@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/operator/:path*"],
+  matcher: ["/admin/:path*", "/api/operator/:path*", "/api/admin/:path*"],
 };
 
 export function middleware(req: NextRequest) {

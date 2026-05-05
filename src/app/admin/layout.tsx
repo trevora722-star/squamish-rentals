@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SignOutButton } from "@/components/admin/SignOutButton";
 
 export const metadata = { title: "Admin · Squamish Adventure Rentals" };
 
@@ -34,6 +35,7 @@ export default function AdminLayout({
             <Link href="/" className="hover:text-fg">
               View site →
             </Link>
+            <SignOutButton />
           </nav>
         </div>
       </header>

@@ -242,6 +242,24 @@ export const chatMessages = pgTable(
   (t) => [index("chat_messages_session_idx").on(t.sessionId, t.createdAt)],
 );
 
+export const blackoutDates = pgTable(
+  "blackout_dates",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    startDate: date("start_date").notNull(),
+    endDate: date("end_date").notNull(),
+    reason: text("reason"),
+    // null atvId = blocks the whole fleet for those dates
+    atvId: uuid("atv_id").references(() => atvs.id, { onDelete: "cascade" }),
+    createdBy: varchar("created_by", { length: 64 }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("blackouts_date_idx").on(t.startDate, t.endDate),
+    index("blackouts_atv_idx").on(t.atvId),
+  ],
+);
+
 export const kbArticles = pgTable(
   "kb_articles",
   {
@@ -264,3 +282,5 @@ export type NewBooking = typeof bookings.$inferInsert;
 export type Customer = typeof customers.$inferSelect;
 export type ChatSession = typeof chatSessions.$inferSelect;
 export type ChatMessage = typeof chatMessages.$inferSelect;
+export type BlackoutDate = typeof blackoutDates.$inferSelect;
+export type NewBlackoutDate = typeof blackoutDates.$inferInsert;

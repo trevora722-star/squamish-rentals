@@ -9,6 +9,7 @@ const NAV = [
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/customers", label: "Customers" },
   { href: "/admin/payments", label: "Payments" },
+  { href: "/admin/gifts", label: "Gifts" },
   { href: "/admin/blackouts", label: "Blackouts" },
   { href: "/admin/fleet", label: "Fleet" },
   { href: "/admin/chats", label: "Chats" },

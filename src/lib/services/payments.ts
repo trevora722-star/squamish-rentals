@@ -18,7 +18,18 @@ function getStripe(): Stripe {
   return stripeClient;
 }
 
-export async function createCheckoutSession(bookingNumber: string) {
+export interface CreateCheckoutOptions {
+  /**
+   * If supplied, override the line items and charge a single line for this CAD
+   * amount instead. Used when a gift card has covered part of the booking.
+   */
+  amountOverrideCad?: number;
+}
+
+export async function createCheckoutSession(
+  bookingNumber: string,
+  options: CreateCheckoutOptions = {},
+) {
   const [booking] = await db
     .select()
     .from(bookings)
@@ -59,6 +70,46 @@ export async function createCheckoutSession(bookingNumber: string) {
     Parameters<typeof stripe.checkout.sessions.create>[0]
   >;
   type LineItem = NonNullable<CreateParams["line_items"]>[number];
+
+  // Gift-card path: if the caller passed an override amount (i.e. a gift
+  // covered part of the booking), charge that single amount instead of the
+  // full itemised breakdown.
+  if (options.amountOverrideCad !== undefined) {
+    const amountCents = Math.max(0, Math.round(options.amountOverrideCad * 100));
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: "cad",
+            unit_amount: amountCents,
+            product_data: {
+              name: `Booking ${booking.bookingNumber} (balance after gift card)`,
+            },
+          },
+        },
+      ],
+      metadata: {
+        booking_id: booking.id,
+        booking_number: booking.bookingNumber,
+        gift_applied: "true",
+      },
+      success_url: `${siteUrl}/bookings/${booking.bookingNumber}?paid=1`,
+      cancel_url: `${siteUrl}/chat?booking=${booking.bookingNumber}&cancelled=1`,
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    });
+    await db
+      .update(bookings)
+      .set({ stripeSessionId: session.id })
+      .where(eq(bookings.id, booking.id));
+    return {
+      booking_number: booking.bookingNumber,
+      payment_url: session.url,
+      expires_at: new Date((session.expires_at ?? 0) * 1000).toISOString(),
+    };
+  }
 
   const lineItems: LineItem[] = items.map((it) => ({
     quantity: it.qty,

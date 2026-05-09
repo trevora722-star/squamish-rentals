@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { bookings, customers } from "@/db/schema";
 import { getStripe, fulfillBookingFromSession } from "@/lib/services/payments";
 import { sendBookingConfirmation } from "@/lib/services/email";
+import { markGiftCardPaid } from "@/lib/services/giftCards";
 
 export const runtime = "nodejs";
 
@@ -25,7 +26,27 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as { id: string; metadata?: Record<string, string> };
+    const session = event.data.object as {
+      id: string;
+      payment_intent?: string | null;
+      metadata?: Record<string, string>;
+    };
+
+    // Gift card purchase fulfilment
+    const giftCardId = session.metadata?.gift_card_id;
+    if (giftCardId) {
+      await markGiftCardPaid(
+        session.id,
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : null,
+      ).catch((err) =>
+        console.error("[stripe webhook] gift card fulfilment failed", err),
+      );
+      // (Optional) send a "your gift card is ready" email here.
+      return new Response("ok", { status: 200 });
+    }
+
     const bookingNumber = session.metadata?.booking_number;
     if (bookingNumber) {
       await fulfillBookingFromSession(session.id);

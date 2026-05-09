@@ -138,6 +138,9 @@ export const bookings = pgTable(
     taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).notNull().default("0"),
     totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
     depositTotal: decimal("deposit_total", { precision: 10, scale: 2 }).notNull().default("0"),
+    giftCreditApplied: decimal("gift_credit_applied", { precision: 10, scale: 2 })
+      .notNull()
+      .default("0"),
     stripeSessionId: varchar("stripe_session_id", { length: 128 }),
     stripePaymentIntentId: varchar("stripe_payment_intent_id", { length: 128 }),
     paidAt: timestamp("paid_at", { withTimezone: true }),
@@ -242,6 +245,64 @@ export const chatMessages = pgTable(
   (t) => [index("chat_messages_session_idx").on(t.sessionId, t.createdAt)],
 );
 
+export const giftCardStatusEnum = pgEnum("gift_card_status", [
+  "pending",
+  "active",
+  "expired",
+  "fully_redeemed",
+  "cancelled",
+]);
+
+export const giftCards = pgTable(
+  "gift_cards",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    code: varchar("code", { length: 32 }).notNull(),
+    amountCad: decimal("amount_cad", { precision: 10, scale: 2 }).notNull(),
+    redeemedCad: decimal("redeemed_cad", { precision: 10, scale: 2 })
+      .notNull()
+      .default("0"),
+    status: giftCardStatusEnum("status").notNull().default("pending"),
+    purchaserName: varchar("purchaser_name", { length: 128 }).notNull(),
+    purchaserEmail: varchar("purchaser_email", { length: 255 }).notNull(),
+    recipientName: varchar("recipient_name", { length: 128 }),
+    recipientEmail: varchar("recipient_email", { length: 255 }),
+    message: text("message"),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    paidAt: timestamp("paid_at", { withTimezone: true }),
+    stripeSessionId: varchar("stripe_session_id", { length: 128 }),
+    stripePaymentIntentId: varchar("stripe_payment_intent_id", { length: 128 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("gift_cards_code_unique").on(t.code),
+    index("gift_cards_purchaser_idx").on(t.purchaserEmail),
+    index("gift_cards_status_idx").on(t.status),
+  ],
+);
+
+export const giftCardRedemptions = pgTable("gift_card_redemptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  giftCardId: uuid("gift_card_id")
+    .notNull()
+    .references(() => giftCards.id, { onDelete: "cascade" }),
+  bookingId: uuid("booking_id")
+    .notNull()
+    .references(() => bookings.id, { onDelete: "cascade" }),
+  amountAppliedCad: decimal("amount_applied_cad", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+  redeemedAt: timestamp("redeemed_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
 export const blackoutDates = pgTable(
   "blackout_dates",
   {
@@ -284,3 +345,6 @@ export type ChatSession = typeof chatSessions.$inferSelect;
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type BlackoutDate = typeof blackoutDates.$inferSelect;
 export type NewBlackoutDate = typeof blackoutDates.$inferInsert;
+export type GiftCard = typeof giftCards.$inferSelect;
+export type NewGiftCard = typeof giftCards.$inferInsert;
+export type GiftCardRedemption = typeof giftCardRedemptions.$inferSelect;

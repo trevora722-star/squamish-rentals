@@ -63,6 +63,12 @@ export function BookingForm() {
   const [agreeWaiver, setAgreeWaiver] = useState(false);
   const [addons, setAddons] = useState<Record<string, number>>({});
 
+  // Gift code state
+  const [giftCode, setGiftCode] = useState("");
+  const [giftBalance, setGiftBalance] = useState<number | null>(null);
+  const [giftError, setGiftError] = useState<string | null>(null);
+  const [validatingGift, setValidatingGift] = useState(false);
+
   const [avail, setAvail] = useState<AvailResult | null>(null);
   const [availLoading, setAvailLoading] = useState(false);
   const [quote, setQuote] = useState<Quote | null>(null);
@@ -140,6 +146,41 @@ export function BookingForm() {
     }
   }
 
+  async function checkGiftCode() {
+    if (!giftCode.trim()) {
+      setGiftBalance(null);
+      setGiftError(null);
+      return;
+    }
+    setValidatingGift(true);
+    setGiftError(null);
+    try {
+      const res = await fetch("/api/gift/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: giftCode.trim() }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setGiftBalance(data.remainingBalance);
+      } else {
+        setGiftBalance(null);
+        const reasonText: Record<string, string> = {
+          not_found: "We couldn't find that gift code.",
+          expired: "That gift code has expired.",
+          fully_redeemed: "That gift code has already been used up.",
+          cancelled: "That gift code was cancelled.",
+          pending_payment: "That gift code is still awaiting payment.",
+        };
+        setGiftError(reasonText[data.reason] ?? "Gift code can't be used.");
+      }
+    } catch (err) {
+      setGiftError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setValidatingGift(false);
+    }
+  }
+
   async function submitBooking() {
     setSubmitError(null);
     setSubmitting(true);
@@ -158,6 +199,7 @@ export function BookingForm() {
           deliveryWindow: deliveryWindow || undefined,
           customer: { name, email, phone },
           notes: notes || undefined,
+          giftCode: giftBalance !== null ? giftCode.trim() : undefined,
         }),
       });
       const data = await res.json();
@@ -167,7 +209,7 @@ export function BookingForm() {
         window.location.href = data.paymentUrl;
         return;
       }
-      // Stripe wasn't configured — land on the booking detail page anyway
+      // Stripe wasn't configured OR fully covered by gift — land on the booking detail page
       window.location.href = `/bookings/${data.bookingNumber}`;
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : String(err));
@@ -301,7 +343,48 @@ export function BookingForm() {
           </p>
         )}
         {quote && (
-          <QuoteSummary quote={quote} onReset={() => setQuote(null)} />
+          <QuoteSummary
+            quote={quote}
+            giftBalance={giftBalance}
+            onReset={() => setQuote(null)}
+          />
+        )}
+      </Section>
+
+      <Section title="Have a gift code?">
+        <div className="flex flex-wrap gap-2 items-end">
+          <div className="flex-1 min-w-[200px]">
+            <input
+              type="text"
+              value={giftCode}
+              onChange={(e) => {
+                setGiftCode(e.target.value.toUpperCase());
+                setGiftBalance(null);
+                setGiftError(null);
+              }}
+              placeholder="SAR-GIFT-XXXX-XXXX"
+              className="form-input font-mono"
+              autoCapitalize="characters"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={checkGiftCode}
+            disabled={!giftCode.trim() || validatingGift}
+            className="btn-ghost text-sm disabled:opacity-50"
+          >
+            {validatingGift ? "Checking…" : "Apply"}
+          </button>
+        </div>
+        {giftBalance !== null && (
+          <p className="mt-3 text-sm text-success font-medium">
+            ✓ Gift code valid — {formatCAD(giftBalance)} balance available.
+            {quote &&
+              ` ${formatCAD(Math.min(giftBalance, quote.grandTotal))} will be applied to this booking.`}
+          </p>
+        )}
+        {giftError && (
+          <p className="mt-3 text-sm text-danger">{giftError}</p>
         )}
       </Section>
 
@@ -524,9 +607,11 @@ function AvailabilityNote({
 
 function QuoteSummary({
   quote,
+  giftBalance,
   onReset,
 }: {
   quote: Quote;
+  giftBalance: number | null;
   onReset: () => void;
 }) {
   if (quote.outOfZone) {
@@ -581,6 +666,20 @@ function QuoteSummary({
           <span>Total</span>
           <span>{formatCAD(quote.grandTotal)}</span>
         </div>
+        {giftBalance !== null && giftBalance > 0 && (
+          <>
+            <Row
+              label="Gift card credit"
+              value={`-${formatCAD(Math.min(giftBalance, quote.grandTotal))}`}
+            />
+            <div className="flex justify-between font-bold py-3 text-base text-primary border-t border-border">
+              <span>Due now</span>
+              <span>
+                {formatCAD(Math.max(0, quote.grandTotal - giftBalance))}
+              </span>
+            </div>
+          </>
+        )}
       </dl>
       <button
         type="button"
